@@ -1,5 +1,3 @@
-# Run this script once calendar on https://github.com/xmlcalendar/data/tree/master/ru updated
-
 import MySQLdb
 from settings import Settings
 from workcalendar import WorkCalendar
@@ -52,8 +50,9 @@ for dt in final_calendar:
 db = MySQLdb.connect(Settings.db_host, Settings.db_user,
                      Settings.db_pass, Settings.db_base, charset="utf8")
 cursor = db.cursor()
+cursor.execute("TRUNCATE TABLE work_calendar")
 sql = """INSERT INTO work_calendar(workdate) VALUES (%s)"""
 sql_query = cursor.executemany(sql, (date_strings))
-print("Total workdays:" + str(sql_query))
+print("Total workdays: " + str(sql_query))
 db.commit()
 db.close()
